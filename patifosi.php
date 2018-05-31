@@ -1,5 +1,6 @@
 <?php
 error_reporting(0);
+header("X-XSS-Protection: 0");
 
 //config login
 // localhost/patifosi.php?login=gans
