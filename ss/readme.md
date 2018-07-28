@@ -3,38 +3,38 @@
 
 ### info gathering
 - phpinfo(123)
-- ![phpinfo](ss/phpinfo.png)
+- ![phpinfo](phpinfo.png)
 - php_uname()
-- ![php_uname](ss/php_uname.png)
+- ![php_uname](php_uname.png)
 - disk_total_space(/)
 - disk_free_space(/)
 -  other
 
 ### cmd
 - system(ls -la)
-- ![system](ss/system.png)
+- ![system](system.png)
 - passthru(ls -la)
 - exec(ls -la)
 - shell_exec()
 
 ### list dir
 - scandir(.) *[array]*
-- ![scandir](ss/scandir.png)
+- ![scandir](scandir.png)
 - system(ls -la)
 - glob(*) *[array]*
-- ![glob](ss/glob.png)
+- ![glob](glob.png)
 - **print all php file** glob(*.php) *[array]*
-- ![glob_php](ss/glob_php.png)
+- ![glob_php](glob_php.png)
 
 ### open file
 - file_get_contents(file.php)
-- ![fgc_file](ss/file_get_contents.png)
-- ![fgc_url](ss/file_get_contents_file.png)
+- ![fgc_file](file_get_contents.png)
+- ![fgc_url](file_get_contents_file.png)
 - readfile(file.php) *[ob]*
-- ![readfile](ss/readfile.png)
+- ![readfile](readfile.png)
 - system(cat file.php) / system(type file.php) *[windows]*
 - highlight_file(file.php) / show_source(file.php)
-- ![highlight_file](ss/highlight_file.png)
+- ![highlight_file](highlight_file.png)
 - php_strip_whitespace(file.php)
 - file(file.php) *[array]*
 
