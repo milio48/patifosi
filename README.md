@@ -20,3 +20,5 @@ $img   = 'https://media.giphy.com/media/XoxPRR71OevDzqllyt/giphy.gif';
 - without cookie & session
 - without eval & passthru family
 - can't passing double argument on function
+
+## [example](https://github.com/milio48/patifosi/tree/master/ss)
